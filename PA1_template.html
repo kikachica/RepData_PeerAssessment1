@@ -77,7 +77,8 @@ img {
 <div id="loading-and-preprocessing-the-data" class="section level3">
 <h3>Loading and preprocessing the data</h3>
 <p>Let’s load the data first and set locale to English.</p>
-<pre class="r"><code>activity &lt;- read.csv(&quot;~/Coursera/Reproducible research/RepData_PeerAssessment1/activity.csv&quot;, stringsAsFactors=FALSE, row.names=NULL)
+<pre class="r"><code>setwd(&quot;~/Coursera/Reproducible research/RepData_PeerAssessment1&quot;)
+activity &lt;- read.csv(&quot;~/Coursera/Reproducible research/RepData_PeerAssessment1/activity.csv&quot;, stringsAsFactors=FALSE, row.names=NULL)
 Sys.setlocale(&quot;LC_TIME&quot;, &quot;English&quot;)</code></pre>
 <pre><code>## [1] &quot;English_United States.1252&quot;</code></pre>
 <p>First, let’s transform <em>date</em> column to POSIXct object and remove NAs.<br />For this, I will use the <strong>lubridate</strong> package.</p>

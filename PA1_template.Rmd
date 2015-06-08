@@ -25,6 +25,7 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 Let's load the data first and set locale to English.
 
 ```{r, echo=TRUE}
+setwd("~/Coursera/Reproducible research/RepData_PeerAssessment1")
 activity <- read.csv("~/Coursera/Reproducible research/RepData_PeerAssessment1/activity.csv", stringsAsFactors=FALSE, row.names=NULL)
 Sys.setlocale("LC_TIME", "English")
 ```
