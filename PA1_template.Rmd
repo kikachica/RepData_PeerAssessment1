@@ -48,7 +48,7 @@ row.names(activity_no_NA)<-NULL
 
 The following code creates a dataframe of total steps taken for each day and creates a histogram.
 
-```{r}
+```{r one, fig.path = "figures/plot"}
 activity_summary <- aggregate(steps ~ date, activity_no_NA, sum)
 hist(activity_summary$steps, col="blue", main="Histogram of total number of steps taken per day",  
      xlab="Total number of steps in a day")
@@ -66,7 +66,7 @@ The mean is **10766.19** and the median is **10765**.
   
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)  
 
-```{r}
+```{r two, fig.path = "figures/plot"}
 activity_summary2 <- aggregate(steps ~ interval, activity_no_NA, mean, row.names=NULL)
 with(activity_summary2, plot(steps~interval, type="l"))
 
@@ -124,7 +124,7 @@ What is the impact of imputing missing data on the estimates of the total daily 
 
 First, I draw a histogram of the new dataset.  
 
-```{r}
+```{r three, fig.path = "figures/plot"}
 activity_summary3 <- aggregate(steps ~ date, activity2, sum)
 hist(activity_summary3$steps, col="red", main="Histogram of total number of steps taken per day",  
      xlab="Total number of steps in a day")
@@ -161,7 +161,7 @@ activity2$day<-as.factor(activity2$day)
   
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).  
   
-```{r fig.show='asis'}  
+```{r four, fig.show='asis', fig.path = "figures/plot"}  
 steps_per_WD <- aggregate(steps ~ interval+day, activity2, mean)
 library(ggplot2)
 p<-qplot(interval, steps, data=steps_per_WD, geom=c("line"), xlab="interval", ylab="Number of steps") + facet_wrap(~day, ncol=1)
