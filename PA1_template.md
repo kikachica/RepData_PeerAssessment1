@@ -24,17 +24,30 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 
 Let's load the data first and set locale to English.
 
-```{r, echo=TRUE}
+
+```r
 setwd("~/Coursera/Reproducible research/RepData_PeerAssessment1")
 activity <- read.csv("~/Coursera/Reproducible research/RepData_PeerAssessment1/activity.csv", stringsAsFactors=FALSE, row.names=NULL)
 Sys.setlocale("LC_TIME", "English")
 ```
 
+```
+## [1] "English_United States.1252"
+```
+
 First, let's transform *date* column to POSIXct object and remove NAs.  
 For this, I will use the **lubridate** package.
 
-```{r, results='hide'}
+
+```r
 library(lubridate)
+```
+
+```
+## Warning: package 'lubridate' was built under R version 3.1.3
+```
+
+```r
 activity$date<-ymd(activity$date)
 activity_no_NA<-na.omit(activity)
 row.names(activity_no_NA)<-NULL
@@ -48,18 +61,32 @@ row.names(activity_no_NA)<-NULL
 
 The following code creates a dataframe of total steps taken for each day and creates a histogram.
 
-```{r}
+
+```r
 activity_summary <- aggregate(steps ~ date, activity_no_NA, sum)
 hist(activity_summary$steps, col="blue", main="Histogram of total number of steps taken per day",  
      xlab="Total number of steps in a day")
 ```
 
+![plot of chunk one](figures/plotone-1.png) 
 
 3. Calculate and report the mean and median of the total number of steps taken per day
 
-```{r}
+
+```r
 mean(activity_summary$steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(activity_summary$steps)
+```
+
+```
+## [1] 10765
 ```
 The mean is **10766.19** and the median is **10765**.  
 
@@ -67,18 +94,31 @@ The mean is **10766.19** and the median is **10765**.
   
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)  
 
-```{r}
+
+```r
 activity_summary2 <- aggregate(steps ~ interval, activity_no_NA, mean, row.names=NULL)
 with(activity_summary2, plot(steps~interval, type="l"))
-
 ```
 
+![plot of chunk two](figures/plottwo-1.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?  
 
-```{r}
+
+```r
 max(activity_summary2[,2])
+```
+
+```
+## [1] 206.1698
+```
+
+```r
 activity_summary2$interval[which.max(activity_summary2[,2])]
+```
+
+```
+## [1] 835
 ```
 
 Interval **835** contains maximum number of steps, which is **206.1698** steps.  
@@ -87,7 +127,8 @@ Interval **835** contains maximum number of steps, which is **206.1698** steps.
   
 1. Calculate and report the total number of missing values in the dataset
   
-```{r}
+
+```r
 tot_NA=sum(is.na(activity$steps))
 ```
   
@@ -99,7 +140,8 @@ In the dataset there are **2304** missing values.
 I have filled the missing values by taking average steps per interval.  
 The new dataset is called *activity2*
 
-```{r}
+
+```r
 activity2<-activity
 int<-0
 step<-0
@@ -126,19 +168,34 @@ What is the impact of imputing missing data on the estimates of the total daily 
 
 First, I draw a histogram of the new dataset.  
 
-```{r}
+
+```r
 activity_summary3 <- aggregate(steps ~ date, activity2, sum)
 hist(activity_summary3$steps, col="red", main="Histogram of total number of steps taken per day",  
      xlab="Total number of steps in a day")
 ```
 
+![plot of chunk three](figures/plotthree-1.png) 
+
     
 Then, I calculate the mean and the median of total number of steps taken per day.  
   
- ```{r}
-mean(activity_summary3$steps)
-median(activity_summary3$steps)
-``` 
+ 
+ ```r
+ mean(activity_summary3$steps)
+ ```
+ 
+ ```
+ ## [1] 10766.19
+ ```
+ 
+ ```r
+ median(activity_summary3$steps)
+ ```
+ 
+ ```
+ ## [1] 10766.19
+ ```
   
 Both the mean and median are **10766.19**.    
 
@@ -148,32 +205,44 @@ We can notice that the mean of the new dataset is the same as the old one withou
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
- ```{r}
-activity2$weekday<-as.factor(weekdays(activity2$date))
-activity2$day<-0
-for(i in 1:nrow(activity2)){
-if(activity2[i,4]=="Saturday" || activity2[i,4]=="Sunday" )
+ 
+ ```r
+ activity2$weekday<-as.factor(weekdays(activity2$date))
+ activity2$day<-0
+ for(i in 1:nrow(activity2)){
+ if(activity2[i,4]=="Saturday" || activity2[i,4]=="Sunday" )
         activity2[i,5]<-"weekend"
         else
         activity2[i,5]<-"weekday"
-}
-activity2$weekday<-NULL
-activity2$day<-as.factor(activity2$day)
-``` 
+ }
+ activity2$weekday<-NULL
+ activity2$day<-as.factor(activity2$day)
+ ```
   
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).  
   
-```{r cache=T, fig.show='asis'}  
+
+```r
 steps_per_WD <- aggregate(steps ~ interval+day, activity2, mean)
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.1.3
+```
+
+```r
 p<-qplot(interval, steps, data=steps_per_WD, geom=c("line"), xlab="interval", ylab="Number of steps") + facet_wrap(~day, ncol=1)
 print(p)
 ```
+
+![plot of chunk four](figures/plotfour-1.png) 
   
 In the end, we remove all variables to free memory  
   
 
-```{r}  
+
+```r
 rm(activity, activity2, activity_summary, activity_summary2, activity_summary3, activity_no_NA, steps_per_WD)
 ```
     
