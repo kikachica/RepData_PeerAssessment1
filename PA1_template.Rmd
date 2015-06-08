@@ -161,7 +161,7 @@ activity2$day<-as.factor(activity2$day)
   
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).  
   
-```{r cache=T, fig.show='asis'}  
+```{r fig.show='asis'}  
 steps_per_WD <- aggregate(steps ~ interval+day, activity2, mean)
 library(ggplot2)
 p<-qplot(interval, steps, data=steps_per_WD, geom=c("line"), xlab="interval", ylab="Number of steps") + facet_wrap(~day, ncol=1)

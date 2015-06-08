@@ -54,6 +54,7 @@ hist(activity_summary$steps, col="blue", main="Histogram of total number of step
      xlab="Total number of steps in a day")
 ```
 
+
 3. Calculate and report the mean and median of the total number of steps taken per day
 
 ```{r}
@@ -71,6 +72,7 @@ activity_summary2 <- aggregate(steps ~ interval, activity_no_NA, mean, row.names
 with(activity_summary2, plot(steps~interval, type="l"))
 
 ```
+
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?  
 
